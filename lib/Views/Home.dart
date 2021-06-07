@@ -21,35 +21,63 @@ class _HomeState extends State<Home> {
         height: MediaQuery.of(context).size.height * 0.9,
         child: GestureDetector(
           onPanDown: (details) {
-            setState(() {
-              points.add(
-                DataPoints(
-                  points: details.localPosition,
-                  brushColor: this.brushColorDefault,
-                  stroke: this.strokeWidth,
-                  
-                ),
-              );
-            });
+            setState(
+              () {
+                // points on start
+                points.add(
+                  DataPoints(
+                    points: details.localPosition,
+                    painterObject: Paint()
+                      ..color = this.brushColorDefault
+                      ..strokeCap = StrokeCap.round
+                      ..strokeWidth = this.strokeWidth
+                      ..isAntiAlias = true
+                      ..filterQuality = FilterQuality.high,
+                  ),
+                );
+              },
+            );
           },
           onPanUpdate: (details) {
-            setState(() {
-              points.add(details.localPosition);
-            });
+            setState(
+              () {
+                // Add the points on drag
+
+                points.add(
+                  DataPoints(
+                    points: details.localPosition,
+                    painterObject: Paint()
+                      ..color = this.brushColorDefault
+                      ..strokeCap = StrokeCap.round
+                      ..strokeWidth = this.strokeWidth
+                      ..isAntiAlias = true
+                      ..filterQuality = FilterQuality.high,
+                  ),
+                );
+              },
+            );
           },
+          // onPanEnd: (details) {
+          //   setState(() {
+          //     points.add(DataPoints(
+          //         points: Offset(0, 0),
+          //         painterObject: Paint()..color = Colors.white,
+          //         lifted: true));
+          //   });
+          // },
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.9,
             child: CustomPaint(
               painter: Painter(
-                  points: this.points,
-                  stroke: this.strokeWidth,
-                  color: this.brushColorDefault),
+                points: this.points,
+              ),
             ),
           ),
         ),
       ),
       bottomNavigationBar: Container(
+        padding: EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.grey[200],
@@ -61,7 +89,6 @@ class _HomeState extends State<Home> {
           mainAxisSize: MainAxisSize.max,
           children: [
             IconButton(
-                color: this.brushColorDefault,
                 onPressed: () {
                   //choose color pallette
 
@@ -91,6 +118,7 @@ class _HomeState extends State<Home> {
                 },
                 icon: Icon(Icons.color_lens_outlined)),
             Slider(
+                activeColor: this.brushColorDefault,
                 value: strokeWidth,
                 max: 10,
                 min: 1,
@@ -99,24 +127,43 @@ class _HomeState extends State<Home> {
                     strokeWidth = value;
                   });
                 }),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    try {
-                      this.points.removeLast();
-                    } on RangeError {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Not Drawn Yet"),
-                        ),
-                      );
-                    }
-                  });
-                },
-                icon: Icon(Icons.undo)),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  try {
+                    this.points.removeLast();
+                  } on RangeError {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Not Drawn Yet"),
+                      ),
+                    );
+                  }
+                });
+              },
+              onLongPress: () {
+                setState(() {
+                  try {
+                    this.points.clear();
+                  } on RangeError {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("Not Drawn Yet"),
+                      ),
+                    );
+                  }
+                });
+              },
+              child: Icon(
+                Icons.undo_rounded,
+              ),
+            )
           ],
         ),
       ),
     );
   }
+
+// void penTool(List<DataPoints> points){}
+
 }
