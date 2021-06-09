@@ -1,4 +1,6 @@
 # DrawNotes
+> this app is to be integrated with a main-stream app that is currently under development
+
 
 Features :
 ```
