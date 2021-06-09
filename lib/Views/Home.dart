@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
                 // points on start
                 points.add(
                   DataPoints(
+                    lifted: false,
                     points: details.localPosition,
                     painterObject: Paint()
                       ..color = this.brushColorDefault
@@ -45,6 +46,7 @@ class _HomeState extends State<Home> {
 
                 points.add(
                   DataPoints(
+                    lifted: false,
                     points: details.localPosition,
                     painterObject: Paint()
                       ..color = this.brushColorDefault
@@ -57,14 +59,19 @@ class _HomeState extends State<Home> {
               },
             );
           },
-          // onPanEnd: (details) {
-          //   setState(() {
-          //     points.add(DataPoints(
-          //         points: Offset(0, 0),
-          //         painterObject: Paint()..color = Colors.white,
-          //         lifted: true));
-          //   });
-          // },
+          onPanEnd: (details) {
+            setState(
+              () {
+                points.add(
+                  DataPoints(
+                    points: this.points[-1].points,
+                    painterObject: Paint()..color = Colors.white,
+                    lifted: true,
+                  ),
+                );
+              },
+            );
+          },
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.9,
