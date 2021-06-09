@@ -11,7 +11,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   double strokeWidth = 1;
   Color brushColorDefault = Colors.black;
-  List<DataPoints> points = [];
+  List<List<DataPoints>> points = [[]];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +29,8 @@ class _HomeState extends State<Home> {
             setState(
               () {
                 // points on start
-                points.add(
+                points[points.length - 1].add(
                   DataPoints(
-                    lifted: false,
                     points: details.localPosition,
                     painterObject: Paint()
                       ..color = this.brushColorDefault
@@ -44,9 +48,8 @@ class _HomeState extends State<Home> {
               () {
                 // Add the points on drag
 
-                points.add(
+                points[points.length - 1].add(
                   DataPoints(
-                    lifted: false,
                     points: details.localPosition,
                     painterObject: Paint()
                       ..color = this.brushColorDefault
@@ -62,13 +65,14 @@ class _HomeState extends State<Home> {
           onPanEnd: (details) {
             setState(
               () {
-                points.add(
-                  DataPoints(
-                    points: this.points[-1].points,
-                    painterObject: Paint()..color = Colors.white,
-                    lifted: true,
-                  ),
-                );
+                points.add([]);
+                // points[points.length - 1].add(
+                //   DataPoints(
+                //     points: Offset(0,0),
+                //     painterObject: Paint()..color = Colors.white,
+                //     lifted: true,
+                //   ),
+                // );
               },
             );
           },
@@ -142,7 +146,7 @@ class _HomeState extends State<Home> {
                   } on RangeError {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Not Drawn Yet"),
+                        content: Text("You got to draw something to remove"),
                       ),
                     );
                   }
@@ -170,7 +174,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
-// void penTool(List<DataPoints> points){}
-
 }

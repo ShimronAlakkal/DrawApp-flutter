@@ -4,21 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Painter extends CustomPainter {
-  List<DataPoints> points = [];
+  List<List<DataPoints>> points = [];
 
   Painter({required this.points});
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (this.points.length > 1) {
-      for (int i = 0; i < points.length - 1; i++) {
-        if (!points[i].lifted) {
-          canvas.drawLine(
-              points[i].points, points[i + 1].points, points[i].painterObject);
-        } else if (points[i].lifted) {
-          canvas.drawLine(points[i + 1].points, points[i + 1].points,
-              points[i + 1].painterObject);
-        }
+    for (int i = 0; i < this.points.length; i++) {
+      for (int j = 0; j < this.points[i].length - 1; j++) {
+        canvas.drawLine(points[i][j].points, points[i][j + 1].points,
+            points[i][j].painterObject);
       }
     }
   }
