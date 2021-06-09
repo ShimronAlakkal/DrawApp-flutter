@@ -1,5 +1,13 @@
 # DrawNotes
 
+Features :
+```
+Draw Notes 
+Multiple variety of colors to choose from
+draw lines 
+undo drawn mistaken lines
+```
+
 Bugs solved :
 ```
 . lines automatically intersecting at 0,0
