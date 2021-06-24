@@ -10,16 +10,26 @@ class Painter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    penTool(this.points, canvas, size);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+
+  void lineTool() {}
+
+  void circleTool() {}
+
+  void rectangleTool() {}
+
+  void penTool(List<List<DataPoints>> points, Canvas canvas, Size size) {
     for (int i = 0; i < this.points.length; i++) {
       for (int j = 0; j < this.points[i].length - 1; j++) {
         canvas.drawLine(points[i][j].points, points[i][j + 1].points,
             points[i][j].painterObject);
       }
     }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

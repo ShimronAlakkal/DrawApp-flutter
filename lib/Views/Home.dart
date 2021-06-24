@@ -66,13 +66,6 @@ class _HomeState extends State<Home> {
             setState(
               () {
                 points.add([]);
-                // points[points.length - 1].add(
-                //   DataPoints(
-                //     points: Offset(0,0),
-                //     painterObject: Paint()..color = Colors.white,
-                //     lifted: true,
-                //   ),
-                // );
               },
             );
           },
